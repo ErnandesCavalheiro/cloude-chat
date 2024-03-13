@@ -1,0 +1,30 @@
+version: "3.7"
+
+volumes:
+  mysql_data:
+
+services:
+  app:
+    build:
+      args:
+        user: phpuser
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+      - ./php.ini:/usr/local/etc/php/conf.d/app.php.inils
+  db_cloude:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: mypassword
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: myuserpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql

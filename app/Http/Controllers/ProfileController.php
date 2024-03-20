@@ -10,9 +10,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Services\AnthropicService;
+use Illuminate\Support\Facades\Log;
 
 class ProfileController extends Controller
 {
+    public function __construct(private readonly AnthropicService $anthropicService)
+    {}
+
     /**
      * Display the user's profile form.
      */
@@ -59,5 +64,25 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function form(Request $request)
+    {
+        return view('form');
+    }
+
+    public function test(Request $request)
+    {
+        Log::debug($request->content);
+
+        $message = $this->anthropicService->createMessage($request->content);
+
+        Log::debug(json_encode($message));
+
+        $message_content = $this->anthropicService->getMessageContent($message);
+
+        Log::debug(json_encode($message));
+
+        return response()->json(['response' => $message_content], 200);
     }
 }

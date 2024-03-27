@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ChatMessageController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -37,5 +39,8 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/form', [ProfileController::class, 'form'])->name('profile.form');
 Route::post('/test', [ProfileController::class, 'test'])->name('profile.test');
+
+Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+Route::post('/chat/send-message', [ChatMessageController::class, 'sendMessage'])->name('chat-message.message');
 
 require __DIR__.'/auth.php';

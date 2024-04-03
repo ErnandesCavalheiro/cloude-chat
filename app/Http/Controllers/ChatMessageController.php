@@ -15,10 +15,10 @@ class ChatMessageController extends Controller
 
     public function sendMessage(Request $request)
     {
-        $user_message = new ChatMessage(['chat_id' => 19, 'role' => 'user', 'content' => $request->message]);
+        $user_message = new ChatMessage(['chat_id' => $request->chat_id, 'role' => 'user', 'content' => $request->message]);
         $user_message->save();
 
-        $history = ChatMessage::where('chat_id', 19)
+        $history = ChatMessage::where('chat_id', $request->chat_id)
                     ->orderBy('created_at', 'asc')
                     ->get(['role', 'content'])
                     ->map(function ($message) {
@@ -32,7 +32,7 @@ class ChatMessageController extends Controller
         $response = $this->anthropicService->createMessage($request->message, $history);
         $response_content = $this->anthropicService->getMessageContent($response);
 
-        $ai_response = new ChatMessage(['chat_id' => 19, 'role' => 'assistant', 'content' => $response_content]);
+        $ai_response = new ChatMessage(['chat_id' => $request->chat_id, 'role' => 'assistant', 'content' => $response_content]);
         $ai_response->save();
 
         return response()->json(['response' => $response_content, 'history' => $history], 200);

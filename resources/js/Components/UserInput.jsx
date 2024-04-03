@@ -18,7 +18,8 @@ const UserInput = (props) => {
       setIsLoading(true);
       try {
         const response = await axios.post('http://localhost:8000/chat/send-message', {
-          message: userMessage
+          message: userMessage,
+          chat_id: props.chatId
         });
 
         if (response.data) {

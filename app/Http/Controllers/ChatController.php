@@ -13,6 +13,8 @@ class ChatController extends Controller
         $chat = new Chat(['user_id' => 1]);
         $chat->save();
 
-        return Inertia::render('Chat/index', []);
+        return Inertia::render('Chat/index', [
+            'chat_id' => $chat->id
+        ]);
     }
 }

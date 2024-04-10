@@ -41,6 +41,8 @@ Route::get('/form', [ProfileController::class, 'form'])->name('profile.form');
 Route::post('/test', [ProfileController::class, 'test'])->name('profile.test');
 
 Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+Route::get('/chat/{id}', [ChatController::class, 'show'])->name('chat.show');
+Route::get('/new-chat', [ChatController::class, 'new'])->name('chat.new');
 Route::post('/chat/send-message', [ChatMessageController::class, 'sendMessage'])->name('chat-message.message');
 
 require __DIR__.'/auth.php';
